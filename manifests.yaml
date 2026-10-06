@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mytetris-deploy
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: mytetris-dev
+  template:
+    metadata:
+      labels:
+        app: mytetris-dev
+    spec:
+      containers:
+        - name: cont1
+          image: sandeepkr98/mytetris:v1
+          ports:
+            - containerPort: 80
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mytetris-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: mytetris-dev
+  ports:
+    - port: 80
+      targetPort: 80
+
+
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mytetris-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mytetris-deploy
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 10
