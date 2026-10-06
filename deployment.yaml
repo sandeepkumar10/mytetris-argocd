@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: mytetris-deploy
 spec:
-  replicas: 2
+  replicas: 4
   selector:
     matchLabels:
       app: mytetris-prod
@@ -17,4 +17,7 @@ spec:
         - name: cont1
           image: sandeepkr98/mytetris:v1
           ports:
-            - containerPort: 80
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: "100m"
