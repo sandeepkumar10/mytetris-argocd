@@ -15,9 +15,16 @@ spec:
     spec:
       containers:
         - name: cont1
-          image: shaikmustafa/mygame:latest
+          image: sandeepkr98/mytetris:v1
           ports:
-            - containerPort: 80
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"
 
 
 ---
@@ -31,7 +38,7 @@ spec:
     app: mytetris-dev
   ports:
     - port: 80
-      targetPort: 80
+      targetPort: 3000
 
 
 
